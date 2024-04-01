@@ -12,7 +12,7 @@ Speed Typing is a simple web-based game designed to improve typing speed and acc
 
 ### How to Play
 
-1. Open the game in your web browser by [clicking here](file:///C:/Users/rory2/Documents/VS%20Code%20Practice/Typing%20Game/index.html).
+1. Open the game in your browser: [click here](file:///C:/Users/rory2/Documents/VS%20Code%20Practice/Typing%20Game/index.html).
 2. Click on the "Start Game" button to begin.
 3. Type the displayed words as fast and accurately as possible.
 4. Your score will be calculated based on the number of correct words typed.
