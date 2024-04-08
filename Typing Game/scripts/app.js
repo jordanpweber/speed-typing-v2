@@ -2,23 +2,24 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     const words = ['dinosaur', 'love', 'pineapple', 'calendar', 'robot',
-    'building', 'population', 'weather', 'bottle', 'history', 'dream', 'character', 
-    'money', 'absolute', 'discipline', 'machine', 'accurate', 'connection', 'rainbow',
-    'bicycle', 'eclipse', 'calculator', 'trouble', 'watermelon', 'developer', 'philosophy', 
-    'database', 'periodic', 'capitalism', 'abominable', 'component', 'future',
-    'pasta', 'microwave', 'jungle', 'wallet', 'canada', 'coffee', 'beauty', 
-    'agency', 'chocolate', 'eleven', 'technology', 'alphabet', 'knowledge',
-    'magician', 'professor', 'triangle', 'earthquake', 'baseball', 'beyond', 
-    'evolution', 'banana', 'perfumer', 'computer', 'management', 'discovery', 
-    'ambition', 'music', 'eagle', 'crown', 'chess', 'laptop', 'bedroom', 'delivery', 
-    'enemy', 'button', 'superman', 'library', 'unboxing', 'bookstore', 'language', 
-    'homework', 'fantastic', 'economy', 'interview', 'awesome', 'challenge', 
-    'science', 'mystery', 'famous', 'league', 'memory', 'leather', 'planet', 
-    'software', 'update', 'yellow', 'keyboard', 'window'];
+        'building', 'population', 'weather', 'bottle', 'history', 'dream', 'character', 
+        'money', 'absolute', 'discipline', 'machine', 'accurate', 'connection', 'rainbow',
+        'bicycle', 'eclipse', 'calculator', 'trouble', 'watermelon', 'developer', 'philosophy', 
+        'database', 'periodic', 'capitalism', 'abominable', 'component', 'future',
+        'pasta', 'microwave', 'jungle', 'wallet', 'canada', 'coffee', 'beauty', 
+        'agency', 'chocolate', 'eleven', 'technology', 'alphabet', 'knowledge',
+        'magician', 'professor', 'triangle', 'earthquake', 'baseball', 'beyond', 
+        'evolution', 'banana', 'perfumer', 'computer', 'management', 'discovery', 
+        'ambition', 'music', 'eagle', 'crown', 'chess', 'laptop', 'bedroom', 'delivery', 
+        'enemy', 'button', 'superman', 'library', 'unboxing', 'bookstore', 'language', 
+        'homework', 'fantastic', 'economy', 'interview', 'awesome', 'challenge', 
+        'science', 'mystery', 'famous', 'league', 'memory', 'leather', 'planet', 
+        'software', 'update', 'yellow', 'keyboard', 'window'
+    ];
 
     let currentWord;
     let score = 0;
-    let timeLeft = 99; // unit is seconds by default
+    let timeLeft = 99;
     let isPlaying = false;
     let timerInterval;
 
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const restartBtn = document.getElementById('restart-btn');
     const finalScoreDisplay = document.getElementById('final-score');
     const backgroundMusic = document.getElementById('background-music');
-    
+
     startBtn.addEventListener('click', startGame);
     restartBtn.addEventListener('click', restartGame);
     wordInput.addEventListener('input', checkWord);
@@ -43,17 +44,18 @@ document.addEventListener("DOMContentLoaded", function() {
         isPlaying = true;
         backgroundMusic.play();
     }
+
     function restartGame() {
-         window.location.reload();
+        window.location.reload();
     }
-    
+
     function checkWord() {
         const typedWord = wordInput.value.trim();
         if (typedWord === currentWord) {
             score++;
             hitsDisplay.textContent = score;
             displayRandomWord();
-            wordInput.value = ''; 
+            wordInput.value = '';
         }
     }
 
@@ -88,6 +90,33 @@ document.addEventListener("DOMContentLoaded", function() {
         restartBtn.classList.remove('hidden');
         startBtn.classList.add('hidden');
         backgroundMusic.pause();
+
+        saveScore(score);
+        displayTopScores();
+    }
+
+    function saveScore(score) {
+        const storedScores = localStorage.getItem('topScores');
+        const topScores = storedScores ? JSON.parse(storedScores) : [];
+        topScores.push({ hits: score });
+        topScores.sort((a, b) => b.hits - a.hits);
+        const updatedTopScores = topScores.slice(0, 9);
+        localStorage.setItem('topScores', JSON.stringify(updatedTopScores));
+    }
+
+    function displayTopScores() {
+        const storedScores = localStorage.getItem('topScores');
+        if (storedScores) {
+            const topScores = JSON.parse(storedScores);
+            const topScoresContainer = document.getElementById('top-scores-container');
+            topScoresContainer.innerHTML = '';
+
+            topScores.forEach((score, index) => {
+                const scoreElement = document.createElement('div');
+                scoreElement.textContent = `Rank ${index + 1}: Hits - ${score.hits}`;
+                topScoresContainer.appendChild(scoreElement);
+            });
+        }
     }
 });
 
